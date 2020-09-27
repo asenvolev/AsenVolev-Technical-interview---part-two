@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserProp } from './UserProp';
 import { selectUserById } from "./usersSlice";
 
 export const User = ({ userId }) => {
     const user = useSelector(state => selectUserById(state, userId));
+    const dispatch = useDispatch();
+
     const [name, setName] = useState(user.name);
     const [username, setUsername] = useState(user.username);
     const [email, setEmail] = useState(user.email);
@@ -24,7 +26,7 @@ export const User = ({ userId }) => {
     const onWebsiteChanged = e => setWebsite(e.target.value)
 
     const onSaveUserInfo = () => {
-
+        
     }
 
     return (
