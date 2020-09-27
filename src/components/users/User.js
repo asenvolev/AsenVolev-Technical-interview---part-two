@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { UserProp } from './UserProp';
-import { selectUserById, userUpdated } from "./usersSlice";
+import { fetchUserPosts, selectUserById, userUpdated } from "./usersSlice";
 
 export const User = ({ userId }) => {
     const user = useSelector(state => selectUserById(state, userId));
@@ -45,6 +45,9 @@ export const User = ({ userId }) => {
     const onSaveUserInfo = () => {
         dispatch(userUpdated(updateUser));
     }
+    const onGetUsersPost = () => {
+        dispatch(fetchUserPosts(user.id));
+    }
 
     return (
         <section>
@@ -53,6 +56,9 @@ export const User = ({ userId }) => {
             </form>
             <button type="button" onClick={onSaveUserInfo}>
                 Save User Info
+            </button>
+            <button type="button" onClick={onGetUsersPost}>
+                Get user’s posts
             </button>
         </section>
     )
