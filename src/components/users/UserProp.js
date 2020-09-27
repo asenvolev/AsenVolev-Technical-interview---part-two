@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from 'react';
 
-const editableUserProps = ['name', 'username', 'email', 'street', 'city', 'phone', 'website'];
+const editableUserProps = ['name', 'username', 'email', 'address.street', 'address.suite', 'address.city', 'phone', 'website'];
 
 export const UserProp = ({objKey, objValue, onObjValueChanged}) => {
 
     if(typeof(objValue) == "object"){
         return Object.keys(objValue).map(prop => {
-            const propName = objKey + '.' + objValue;
+            const propName = objKey + '.' + prop;
             return <UserProp key={prop} objKey={propName} objValue={objValue[prop]} onObjValueChanged={onObjValueChanged}/>
         });
     }
