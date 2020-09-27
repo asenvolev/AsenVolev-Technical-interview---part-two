@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import { PostsList } from '../posts/PostsList';
 import { UserProp } from './UserProp';
 import { fetchUserPosts, selectUserById, userUpdated } from "./usersSlice";
 
@@ -42,6 +43,16 @@ export const User = ({ userId }) => {
         <UserProp key={prop} objKey={prop} objValue={updateUser[prop]} onObjValueChanged={onUserPropChanged}/>
     ))
 
+    let userPosts;
+
+    if (user.posts) {
+        userPosts =  <div>
+                        <PostsList posts={user.posts} />
+                    </div>
+            
+    }
+     
+
     const onSaveUserInfo = () => {
         dispatch(userUpdated(updateUser));
     }
@@ -60,6 +71,7 @@ export const User = ({ userId }) => {
             <button type="button" onClick={onGetUsersPost}>
                 Get user’s posts
             </button>
+            {userPosts}
         </section>
     )
 }
