@@ -6,8 +6,8 @@ import { fetchUserPosts, selectUserById, userUpdated } from "./usersSlice";
 
 export const User = ({ userId }) => {
     const user = useSelector(state => selectUserById(state, userId));
-
     const [updateUser, setUpdateUser] = useState(user);
+    const [isOpened, setIsOpened] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -43,13 +43,17 @@ export const User = ({ userId }) => {
         <UserProp key={prop} objKey={prop} objValue={updateUser[prop]} onObjValueChanged={onUserPropChanged}/>
     ))
 
+    const togglePosts = () => setIsOpened(!isOpened);
+
     let userPosts;
 
     if (user.posts) {
-        userPosts =  <div>
-                        <PostsList posts={user.posts} />
+        userPosts = <div>
+                    <button onClick={togglePosts}>showHide</button>
+                    {
+                        isOpened && <PostsList posts={user.posts} />
+                    }
                     </div>
-            
     }
      
 
@@ -71,7 +75,9 @@ export const User = ({ userId }) => {
             <button type="button" onClick={onGetUsersPost}>
                 Get user’s posts
             </button>
-            {userPosts}
+            <div >
+                {userPosts}
+            </div>
         </section>
     )
 }

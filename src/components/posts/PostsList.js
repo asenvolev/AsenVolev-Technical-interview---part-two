@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { Post } from './Post';
 
 export const PostsList = ({posts}) => {
@@ -6,9 +6,10 @@ export const PostsList = ({posts}) => {
         <li><Post postInfo={post} /></li>
     ))
 
+
     return (
-        <ul>
-            {postsContent}
-        </ul>
+            <ul>
+                {postsContent}
+            </ul>
     )
 }
