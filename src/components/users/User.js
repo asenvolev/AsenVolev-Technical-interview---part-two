@@ -1,32 +1,58 @@
 import React, { useState } from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserProp } from './UserProp';
-import { selectUserById } from "./usersSlice";
+import { selectUserById, userUpdated } from "./usersSlice";
 
 export const User = ({ userId }) => {
     const user = useSelector(state => selectUserById(state, userId));
+
     const [updateUser, setUpdateUser] = useState(user);
+
+    const dispatch = useDispatch();
 
     const onUserPropChanged = e => {
         const prop = e.target.id;
         const value = e.target.value;
-        setUpdateUser()
+        if (prop.includes('.')) {
+            let tokens = prop.split('.');
+            let outerProp = tokens[0];
+            let innerProp = tokens[1];
+            if (outerProp === 'address') {
+                setUpdateUser((prevState) => ({
+                    ...prevState,
+                    address: {
+                        ...prevState.address,
+                        [innerProp]: value
+                    },
+                    company: {
+                        ...prevState.company
+                    }
+                }));
+            }
+        } else {
+            setUpdateUser((prevState) => ({
+                ...prevState,
+                [prop]: value
+            }));
+        }
     }
 
-    const userProps = Object.keys(user).map(prop=>(
+    const userProps = Object.keys(updateUser).map(prop=>(
 
-        <UserProp key={prop} objKey={prop} objValue={user[prop]} onObjValueChanged={onUserPropChanged}/>
+        <UserProp key={prop} objKey={prop} objValue={updateUser[prop]} onObjValueChanged={onUserPropChanged}/>
     ))
 
-
+    const onSaveUserInfo = () => {
+        dispatch(userUpdated(updateUser));
+    }
 
     return (
         <section>
             <form>
                 {userProps}
             </form>
-            <button type="button" >
-                Save Post
+            <button type="button" onClick={onSaveUserInfo}>
+                Save User Info
             </button>
         </section>
     )

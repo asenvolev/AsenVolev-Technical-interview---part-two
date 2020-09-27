@@ -11,11 +11,21 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 const usersSlice = createSlice({
     name: 'users',
     initialState: usersAdapter.getInitialState(),
-    reducers: {},
+    reducers: {
+      userUpdated(state, action){
+        const { id } = action.payload;
+        const existingUser = state.entities[id];
+        if (existingUser) {
+            state.entities[id] = {...action.payload}
+        }
+      }
+    },
     extraReducers: {
         [fetchUsers.fulfilled]: usersAdapter.setAll
     }
 });
+
+export const {userUpdated} = usersSlice.actions;
 
 export default usersSlice.reducer;
 
